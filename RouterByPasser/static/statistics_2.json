@@ -1,0 +1,59 @@
+[
+    {
+        "Retro Clusters contains 1 steps(s)": 1615,
+        "Retro Clusters contains 2 steps(s)": 12063,
+        "Retro Clusters contains 3 steps(s)": 38650,
+        "Retro Clusters contains 4 steps(s)": 74320
+    },
+    {
+        "3<=count<100": 124083,
+        "100<=count<500": 2417,
+        "500<=count<1000": 127,
+        "1000<=count<1500": 17,
+        "1500<=count": 4
+    },
+    [
+        [
+            "Frequency",
+            "One reaction step",
+            "Two reaction steps",
+            "Three reaction steps",
+            "Four reaction steps"
+        ],
+        [
+            "3<=num<100",
+            1598,
+            11920,
+            37801,
+            72764
+        ],
+        [
+            "100<=num<500",
+            17,
+            136,
+            796,
+            1468
+        ],
+        [
+            "500<=num<1000",
+            0,
+            7,
+            44,
+            76
+        ],
+        [
+            "1000<=num<1500",
+            0,
+            0,
+            7,
+            10
+        ],
+        [
+            "1500<=num",
+            0,
+            0,
+            2,
+            2
+        ]
+    ]
+]

@@ -1,0 +1,291 @@
+{% extends "result_base.html" %}
+<title>RxnCluster</title>
+{% block css %}
+<link rel="stylesheet" href="/rxncluster/static/js/rxncluster/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="/rxncluster/static/js/rxncluster/smdb-tab2.css">
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel='stylesheet' href='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.css'>
+<style type='text/css'>
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    text-align: center;
+}
+
+table td,
+table th {
+    border: 1px solid #cad9ea;
+    color: #666;
+    height: 30px;
+}
+
+table thead th {
+    background-color: #CCE8EB;
+    width: 100px;
+    text-align: center;
+}
+
+table tr:nth-child(odd) {
+    background: #fff;
+}
+
+table tr:nth-child(even) {
+    background: #F5FAFA;
+}
+
+/*.selectOption
+    {
+      display:inline;
+    }*/
+.font_label {
+    font-family: inherit;
+
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    font-size: 18px;
+}
+
+;
+</style>
+{% endblock css %}
+{% block js %}
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type='text/javascript' src='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.js'></script>
+<script type="text/javascript" src="/rxncluster/static/js/rxncluster/typeahead.min.js"></script>
+<script type='text/javascript'>
+$(function() {
+    $("#tab").tabs();
+});
+$(function() {
+  var h = location.hash || "#tabHome";
+  var index = $('#tab a[href="' + h + '"]').parent().index();
+  console.log(index)
+  $("#tab").tabs("option", "active", index);
+});
+
+$(function() {
+   $('#tab ul li a').click(function () {location.hash = $(this).attr('href');});
+ });
+
+$(window).on( 'hashchange', function(e) {
+  var h = location.hash || "#tabHome";
+  if (h.indexOf("#tab") >= 0) {
+    var index = $('#tab a[href="' + h + '"]').parent().index();
+    $("#tab").tabs("option", "active", index);
+    console.log(index)
+
+  };
+});
+
+
+function entityToString(entity) {
+    var div = document.createElement('div');
+    div.innerHTML = entity;
+    var res = div.innerText || div.textContent;
+    return res;
+};
+
+$(document).ready(function() {
+    $("#tab").tabs("option", "active", 0);
+
+
+    result_total1 = entityToString('{{result_total1}}');
+    result_total1 = eval("(" + result_total1 + ")");
+
+    result_total2 = entityToString('{{result_total2}}');
+    result_total2 = eval("(" + result_total2 + ")");
+
+    result_total3 = entityToString('{{result_total3}}');
+    result_total3 = eval("(" + result_total3 + ")");
+
+    result_total4 = entityToString('{{result_total4}}');
+    result_total4 = eval("(" + result_total4 + ")");
+    tempath = '{{tempath}}'
+    if(result_total1.length>0){
+        $("#tab").tabs("option", "active", 0);
+    }else if(result_total2.length>0){
+        $("#tab").tabs("option", "active", 1);
+    }else if(result_total2.length>0){
+        $("#tab").tabs("option", "active", 2);
+    }else if(result_total1.length>0){
+        $("#tab").tabs("option", "active", 3);
+    }
+    
+    if (result_total1.length != 0) {
+        $("#reaction_table_1_noresult").hide();
+    };
+    if (result_total2.length != 0) {
+        $("#reaction_table_2_noresult").hide();
+    };
+    if (result_total3.length != 0) {
+        $("#reaction_table_3_noresult").hide();
+    };
+    if (result_total4.length != 0) {
+        $("#reaction_table_4_noresult").hide();
+    };
+    for (i in result_total1) {
+
+        var simplesmarts = result_total1[i].simplesmarts;
+        var combosmarts = result_total1[i].comboretro[0];
+        var combo_simple_smarts_count = result_total1[i].combo_simple_smarts_count;
+        var combosmartsUrlList = result_total1[i].comboretroUrl[0].split("$$")
+        var Score = result_total1[i].Score
+        //var detail = result_total1[i].detail;
+        var index = parseInt(i) + 1;
+        var product_pre_list = result_total1[i].product_pre_list
+
+        $('#reaction_table_1').append("<tr><td style='vertical-align: middle;text-align: center;'>" + index + "</td><td id='retro_1_" + index + "' ><img src='/rxncluster/retro2img/" + combosmartsUrlList[0] + "/150/75'></td><td><div style='width:340px;word-break:break-all;' id='path_pre_1_" + i + "'>" + "</div></td><td style='vertical-align: middle;text-align: center;'>Score:" + Score +
+            // <span>Score:"+Math.log(combo_simple_smarts_count).toFixed(2)+"</span>
+            "<form id='show_detail_step1_" + i + "' action =\"{% url 'RouterByPasser:showDetail' %}\" method=\"GET\" role='form'target='_blank'><button type='submit'>Detail</button><input style='display:none' name = 'tempath' value='" + tempath + "'><input style='display:none' name = 'steplength' value='1'><input style='display:none' name = 'index' value='" + i + "'></form></td></tr>")
+        for (j in product_pre_list) {
+            $('#path_pre_1_' + i).append("<img src = '/rxncluster/smi2img/" + product_pre_list[j] + "/150/150'>")
+            if (j != product_pre_list.length - 1) {
+                $('#path_pre_1_' + i).append('<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1704980428425" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4241" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20"><path d="M512 1024C229.248 1024 0 794.752 0 512S229.248 0 512 0s512 229.248 512 512-229.248 512-512 512z m200.746667-478.506667l1.749333-1.664 30.165333-30.165333-330.496-330.581333a42.837333 42.837333 0 0 0-60.288 0 42.538667 42.538667 0 0 0 0 60.330666l270.08 270.165334-270.08 269.952a42.496 42.496 0 0 0 0 60.288c16.64 16.64 43.861333 16.469333 60.288 0.042666l298.581334-298.368z" fill="#1296db" p-id="4242"></path></svg>')
+            }
+
+        }
+
+
+
+    }
+    for (i in result_total2) {
+        var index = parseInt(i) + 1;
+        var combo_simple_smarts_count = result_total2[i].combo_simple_smarts_count;
+        var simplesmarts = result_total2[i].simplesmarts;
+        var combosmarts = result_total2[i].comboretro[0];
+        var combosmartsList = combosmarts.split("$$");
+        var combosmartsUrlList = result_total2[i].comboretroUrl[0].split("$$")
+        var path = result_total2[i].detail[0].reactant1 + ">>" + result_total2[i].detail[0].product1 + ">>" + result_total2[i].detail[0].product2
+        var product_pre_list = result_total2[i].product_pre_list
+
+        var Score = result_total2[i].Score
+
+
+        $('#reaction_table_2').append("<tr><td style='vertical-align: middle;text-align: center;'>" + index + "</td><td id='retro_2_" + i + "' ><img src='/rxncluster/retro2img/" + combosmartsUrlList[0] + "/150/75'><br><hr style = 'border-top:solid 2px #cce8ec'><img src='/rxncluster/retro2img/" + combosmartsUrlList[1] + "/150/75'></td><td><div style='width:340px;word-break:break-all;' id='path_pre_2_" + i + "'>" + "</div></td><td style='vertical-align: middle;text-align: center;'>Score:" + Score +
+            // "<span>Score:"+Math.log(combo_simple_smarts_count).toFixed(2)+
+            "<form id='show_detail_step2_" + i + "' action =\"{% url 'RouterByPasser:showDetail' %}\" method=\"GET\" role='form' target='_blank'><button type='submit'>Detail</button><input style='display:none' name = 'tempath' value='" + tempath + "'><input style='display:none' name = 'steplength' value='2'><input style='display:none' name = 'index' value='" + i + "'></form></td></tr>")
+
+        for (j in product_pre_list) {
+            $('#path_pre_2_' + i).append("<img src = '/rxncluster/smi2img/" + product_pre_list[j] + "/150/150'>")
+            if (j != product_pre_list.length - 1) {
+                $('#path_pre_2_' + i).append('<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1704980428425" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4241" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20"><path d="M512 1024C229.248 1024 0 794.752 0 512S229.248 0 512 0s512 229.248 512 512-229.248 512-512 512z m200.746667-478.506667l1.749333-1.664 30.165333-30.165333-330.496-330.581333a42.837333 42.837333 0 0 0-60.288 0 42.538667 42.538667 0 0 0 0 60.330666l270.08 270.165334-270.08 269.952a42.496 42.496 0 0 0 0 60.288c16.64 16.64 43.861333 16.469333 60.288 0.042666l298.581334-298.368z" fill="#1296db" p-id="4242"></path></svg>')
+            }
+
+        }
+    }
+    for (i in result_total3) {
+        var index = parseInt(i) + 1;
+        var combo_simple_smarts_count = result_total3[i].combo_simple_smarts_count;
+        var simplesmarts = result_total3[i].simplesmarts;
+        var combosmarts = result_total3[i].comboretro[0];
+        var combosmartsList = combosmarts.split("$$");
+        var combosmartsUrlList = result_total3[i].comboretroUrl[0].split("$$")
+        var path = result_total3[i].detail[0].reactant1 + ">>" + result_total3[i].detail[0].product1 + ">>" + result_total3[i].detail[0].product2 + ">>" + result_total3[i].detail[0].product3
+        var product_pre_list = result_total3[i].product_pre_list
+        var Score = result_total3[i].Score
+        $('#reaction_table_3').append("<tr><td style='vertical-align: middle;text-align: center;'>" + index + "</td><td id='retro_step_3" + i + "'><img src='/rxncluster/retro2img/" + combosmartsUrlList[0] + "/150/75'><br><hr style = 'border-top:solid 2px #cce8ec'><img src='/rxncluster/retro2img/" + combosmartsUrlList[1] + "/150/75'><br><hr style = 'border-top:solid 2px #cce8ec'><img src='/rxncluster/retro2img/" + combosmartsUrlList[2] + "/150/75'></td><td><div style='width:340px;word-break:break-all;' id='path_pre_3_" + i + "'>" + "</div></td><td style='vertical-align: middle;text-align: center;'>Score:" + Score +
+            // <span>Score:"+Math.log(combo_simple_smarts_count).toFixed(2)+
+            "<form id='show_detail_step3_" + i + "' action =\"{% url 'RouterByPasser:showDetail' %}\" method=\"GET\" role='form' target='_blank'><button type='submit'>Detail</button><input style='display:none' name = 'tempath' value='" + tempath + "'><input style='display:none' name = 'steplength' value='3'><input style='display:none' name = 'index' value='" + i + "'></form></td></tr>")
+
+        for (j in product_pre_list) {
+            $('#path_pre_3_' + i).append("<img src = '/rxncluster/smi2img/" + product_pre_list[j] + "/150/150'>")
+            if (j != product_pre_list.length - 1) {
+                $('#path_pre_3_' + i).append('<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1704980428425" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4241" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20"><path d="M512 1024C229.248 1024 0 794.752 0 512S229.248 0 512 0s512 229.248 512 512-229.248 512-512 512z m200.746667-478.506667l1.749333-1.664 30.165333-30.165333-330.496-330.581333a42.837333 42.837333 0 0 0-60.288 0 42.538667 42.538667 0 0 0 0 60.330666l270.08 270.165334-270.08 269.952a42.496 42.496 0 0 0 0 60.288c16.64 16.64 43.861333 16.469333 60.288 0.042666l298.581334-298.368z" fill="#1296db" p-id="4242"></path></svg>')
+            }
+
+        }
+    }
+    for (i in result_total4) {
+        var index = parseInt(i) + 1;
+        var combo_simple_smarts_count = result_total4[i].combo_simple_smarts_count;
+        var simplesmarts = result_total4[i].simplesmarts;
+        var combosmarts = result_total4[i].comboretro[0];
+        var combosmartsList = combosmarts.split("$$");
+        var combosmartsUrlList = result_total4[i].comboretroUrl[0].split("$$")
+        var path = result_total4[i].detail[0].reactant1 + ">>" + result_total4[i].detail[0].product1 + ">>" + result_total4[i].detail[0].product2 + ">>" + result_total4[i].detail[0].product3 + ">>" + result_total4[i].detail[0].product4;
+        var product_pre_list = result_total4[i].product_pre_list
+        var Score = result_total4[i].Score
+        $('#reaction_table_4').append("<tr><td style='vertical-align: middle;text-align: center;'>" + index + "</td><td id='retro_step_4" + i + "'><img src='/rxncluster/retro2img/" + combosmartsUrlList[0] + "/150/75'><br><hr style = 'border-top:solid 2px #cce8ec'><img src='/rxncluster/retro2img/" + combosmartsUrlList[1] + "/150/75'><br><hr style = 'border-top:solid 2px #cce8ec'><img src='/rxncluster/retro2img/" + combosmartsUrlList[2] + "/150/75'><br><hr style = 'border-top:solid 2px #cce8ec'><img src='/rxncluster/retro2img/" + combosmartsUrlList[3] + "/150/75'></td><td><div style='width:350px;word-break:break-all;' id='path_pre_4_" + i + "'>" + "</div></td><td style='vertical-align: middle;text-align: center;'>Score:" + Score +
+            // <span>Score:"+Math.log(combo_simple_smarts_count).toFixed(2)+
+            "<form id='show_detail_step1_" + i + "' action =\"{% url 'RouterByPasser:showDetail' %}\" method=\"GET\" role='form' target='_blank'><button type='submit'>Detail</button><input style='display:none' name = 'tempath' value='" + tempath + "'><input style='display:none' name = 'steplength' value='4'><input style='display:none' name = 'index' value='" + i + "'></form></td></tr>")
+        for (j in product_pre_list) {
+            $('#path_pre_4_' + i).append("<img src = '/rxncluster/smi2img/" + product_pre_list[j] + "/150/150'>")
+            if (j != product_pre_list.length - 1) {
+                $('#path_pre_4_' + i).append('<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1704980428425" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4241" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20"><path d="M512 1024C229.248 1024 0 794.752 0 512S229.248 0 512 0s512 229.248 512 512-229.248 512-512 512z m200.746667-478.506667l1.749333-1.664 30.165333-30.165333-330.496-330.581333a42.837333 42.837333 0 0 0-60.288 0 42.538667 42.538667 0 0 0 0 60.330666l270.08 270.165334-270.08 269.952a42.496 42.496 0 0 0 0 60.288c16.64 16.64 43.861333 16.469333 60.288 0.042666l298.581334-298.368z" fill="#1296db" p-id="4242"></path></svg>')
+            }
+
+        }
+    }
+})
+</script>
+{% endblock js %}
+{% block content %}
+
+<body>
+    <br><br><br>
+    <div id="tabPathTracker" style="width:87%;margin: 0 auto;">
+        <div id="tab">
+            <ul>
+                <li><a href="#step1" style='font-weight:90'>1 step</a></li>
+                <li><a href="#step2" style='font-weight:90'>2 steps</a></li>
+                <li><a href="#step3" style='font-weight:90'>3 steps</a></li>
+                <li><a href="#step4" style='font-weight:90'>4 steps</a></li>
+            </ul>
+            <div id='step1'>
+                <table id='reaction_table_1' class="table" style="width:100vw">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Biosynthetic Patterns(RuleCluster)</th>
+                            <th>Reaction Cluster</th>
+                            <th>Detail</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div id='reaction_table_1_noresult'>No Result for biosynthetic patterns in 1 step, Please check results in other steps length</div>
+            </div>
+            <div id='step2'>
+                <table id='reaction_table_2' class="table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th style='width:300px'>Biosynthetic Patterns(RuleCluster)</th>
+                            <th style='width:100px'>Reaction Cluster</th>
+                            <th style='width:100px'>Detail</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div id='reaction_table_2_noresult'>No Result for biosynthetic patterns in 2 steps, Please check results in other steps length</div>
+            </div>
+            <div id='step3'>
+                <table id='reaction_table_3' class="table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th style='width:300px'>Biosynthetic Patterns(RuleCluster)</th>
+                            <th style='width:100px'>Reaction Cluster</th>
+                            <th style='width:100px'>Detail</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div id='reaction_table_3_noresult'>No Results for biosynthetic patterns in 3 steps, Please check results in other steps length</div>
+            </div>
+            <div id='step4'>
+                <table id='reaction_table_4' class="table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th style='width:300px'>Biosynthetic Patterns(RuleCluster)</th>
+                            <th style='width:100px'>Reaction Cluster</th>
+                            <th>Detail</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div id='reaction_table_4_noresult'>No Result for biosynthetic patterns in 4 steps, Please check results in other steps length</div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+{% endblock content %}

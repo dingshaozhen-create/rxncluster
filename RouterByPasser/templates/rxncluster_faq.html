@@ -1,0 +1,149 @@
+{% extends "result_base.html" %}
+{% block title %} Search Result{% endblock%}
+{% block css %}
+<link rel='stylesheet' href='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.css'>
+<style type="text/css">
+.img_container {
+    text-align: center;
+}
+
+.img_container img {
+    max-width: 100%;
+    /* 确保图片不会超过容器宽度 */
+    height: auto;
+    /* 保持图片比例 */
+    vertical-align: middle;
+}
+</style>
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.css">
+{% endblock css %}
+{% block js %}
+<script src="https://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script type='text/javascript' src='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.js'></script> -->
+{% endblock js %}
+{% block content %}
+
+<body>
+    <br><br>
+    <br>
+    <div style='width:80%;margin: 0 auto'>
+        <div data-role="collapsible" data-theme="c" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+            <h3>1. Introduction</h3>
+            <p style='font-size: 18px;text-align: justify;'>&nbsp;&nbsp;&nbsp;&nbsp;Biosynthetic pathways for producing target molecules can be regarded as series of sequential reactions that can also be digitalized as typical biosynthetic patterns (reaction rule clusters) for producing analogs. Conventional methods for pathway design in silico consider only reaction rules with a single step, which neglect the more efficient synthetic strategies crossing multiple steps. The structure of a molecule is topological and can be divided into multiple substructures, different molecules with one or more identical substructure fragments may have similar biosynthetic strategies(Figure 1). Here, based on the concept of gene clusters, we constructed a user-friendly platform (RxnCluster) by digitalizing the typical biosynthetic patterns for the first time. RxnCluster contains 14,378 biosynthetic patterns (reaction rule clusters) covering 37,317 reaction combinations (reaction clusters) whose numbers of steps vary from 1 to 4. According to the results, this platform can identify the reaction clusters in various numbers of steps, which are consistent with the experimental results obtained in wet laboratories. In addition, it can identify other novel reaction clusters that have not yet been reported, which will pave the way toward pathway mining for molecule biosynthesis via different strategies.The workflow of this platform is shown in Figure 2.</p>
+            <div class='img_container'>
+                <img src="/rxncluster/static/rxncluster_png-0.png" style='width:80%;margin:0 auto'>
+                <img src="/rxncluster/static/2-workflow.png" style='width:80%;margin:0 auto'>
+                </div>
+            <div class='img_container'>
+                
+                </div>
+        </div>
+        <div data-role="collapsible" data-theme="c" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+        <h3>2. RxnCluster Implementation</h3>
+        <span style='font-size:18px;text-align: justify;'>&nbsp;&nbsp;&nbsp;&nbsp;RxnCluster is developed on the basis of the Linux, NGINX, PostgreSQL, Python strategy.The server runs under NGINX on a Linux machine running Ubuntu Server. The algorithm and backend program were written in Python by using the Django framework in combination with PostgreSQL to manage the data. Hypertext Markup Language (HTML), Cascading Style Sheets (CSS), and JavaScript were used to implement RxnCluster’s front-end data presentation and interactions.</span>
+        </div>
+        <div data-role="collapsible" data-collapsed-icon="arrow-r" data-content-theme="c" data-theme="c" data-expanded-icon="arrow-d">
+            <h3>3. Draw Molecule</h3>
+            <span style='font-size: 18px'>&nbsp;&nbsp;&nbsp;&nbsp;User can draw a molecule from the blank drawing board or start  drawing molecule  from a structure that has already  in the text box.</span>
+            <div class='img_container'>
+                <img src="/rxncluster/static/rxncluster_png0.png" style='width:80%;'>
+            </div>
+            <div class='img_container'>
+                <img src="/rxncluster/static/rxncluster_png1.png" style='width:80%;'>
+            </div>
+        </div>
+        <div data-role="collapsible" data-collapsed-icon="arrow-r" data-content-theme="c" data-theme="c" data-expanded-icon="arrow-d">
+            <h3>4. If both precursor and target are known</h3>
+            <div data-role='collapsible' data-theme="e" data-mini='true'>
+                <h3>4.1 Input/Get Molecule SMILES</h3>
+                <div class='img_container'>
+                    <img src="/rxncluster/static/rxncluster_png2.png" style='width:80%;'>
+                </div>
+            </div>
+            <div data-role='collapsible' data-theme="e" data-mini='true'>
+                <h3>4.2 Get Rule/Reaction Cluster</h3>
+                <span style='font-size:18px'>&nbsp;&nbsp;&nbsp;&nbsp;Get biosynthetic patterns and predict reaction clusters between precursor and target molecule under mult-steps which step length varying from 1 to 4.</span>
+                <div class='img_container'>
+                    <img src="/rxncluster/static/rxncluster_png3.png" style='width:80%;'>
+                </div>
+            </div>
+            <div data-role='collapsible' data-theme="e" data-mini='true'>
+                <h3>
+                    4.3 Reference enzymatic reaction cluster for predicted reaction cluster
+                </h3>
+                <div class='img_container'>
+                    <img src="/rxncluster/static/rxncluster_png4.png" style='width:80%;'>
+                </div>
+            </div>
+        </div>
+        <div data-role="collapsible" data-collapsed-icon="arrow-r" data-content-theme="c" data-theme="c" data-expanded-icon="arrow-d">
+            <h3>5. If only the target molecule is known</h3>
+            <div data-role="collapsible" data-mini='true' data-theme='e'>
+                <h3>5.1 Input/Get target molecule SMILES</h3>
+                <div class='img_container'>
+                <img src="/rxncluster/static/rxncluster_png5.png" style='width:80%;margin:0 auto'>
+                </div>
+            </div>
+            <div data-role="collapsible" data-mini='true' data-theme='e'>
+                <h3>5.2 Search similar compounds</h3>
+                <div class='img_container'>
+                <img src="/rxncluster/static/rxncluster_png6.png" style='width:80%;margin:0 auto'>
+                </div>
+            </div>
+            <div data-role="collapsible" data-mini='true' data-theme='e'>
+                <h3>5.3 Reference enzymatic reaction cluster for the predicted reaction cluster</h3>
+                <div class='img_container'>
+                <img src="/rxncluster/static/rxncluster_png7.png" style='width:80%;margin:0 auto'>
+                </div>
+            </div>
+        </div>
+        <div data-role="collapsible" data-collapsed-icon="arrow-r" data-content-theme="c" data-theme="c" data-expanded-icon="arrow-d">
+        <h3>6. Meaning of some terminologies</h3>
+        <span style='font-size:18px'><strong>(1).SMILES</strong></span><br>
+        <span>The simplified molecular-input line-entry system (<a href='https://www.daylight.com/dayhtml/doc/theory/theory.smiles.html' target='_blank'>SMILES</a>) is a specification in the form of a line notation for describing the structure of chemical species using short ASCII strings. You can also enter the molecule into RxnCluster via the JSME molecule editor.</span><br><br>
+        <span style='font-size:18px'><strong>(2).Similarity Score</strong></span><br>
+        <span>Molecular similarity Score is range from 0 to 1, which reflect the similarity between target molecule and molecules that have biosynthetic patnways in <a href='https://pubs.acs.org/doi/abs/10.1021/acssynbio.9b00070' target='_blank'>CF-Targeter</a>.After user select one from the list of target analogues, reaction clusters toward target molecule will be predicted on the basis of biosynthetic patterns existed in pathways. The similarity score is calculated by <a href='https://www.rdkit.org/docs/index.html' target='_blank'>RDkit</a>.</span>
+        <br>
+        <br>
+        <span style='font-size:18px'><strong>(3).Typical Biosynthetic Patterns</strong></span><br>
+        <span>
+        	Biosynthetic Pattern(Reaction Rule Cluster) is composed of sequential chemical-structure changes in reaction center.The concept of reaction rule has been used in our previous work(<a href='https://academic.oup.com/nar/article/48/W1/W477/5822956' target='_blank'>Nucleic Acid Research,2020</a>), which represented by <a href='https://www.daylight.com/dayhtml/doc/theory/theory.smarts.html' target='_blank'>SMARTS</a>.Biosynthetic Patterns are extracted from biosynthetic pathways in our previous work &nbsp;(<a href='https://pubs.acs.org/doi/abs/10.1021/acssynbio.9b00070' target='_blank'>CF-Targater</a>), and they can be regarded as typical biosynthetic strategies for producing molecules which have same substructures with previous studied molecules.For example, the reaction cluster(a-1) leading to artemisic acid from Amorpha-4,11-diene as well as the reaction cluster(a-2) leading to Gemacrene A acid from Germacrene A can be summarized as synthetic patterns(Figure b) with 3 steps.
+        </span>
+        <div class='img_container'>
+                <img src="/rxncluster/static/rxncluster_png8.png" style='width:80%;margin:0 auto'>
+                </div>
+        <br><br>
+
+        <span style='font-size:18px'><strong>(3).Reaction cluster</strong></span><br>
+        <span style='font-size: 16px'>
+        Based on the typical biosynthetic patterns extracted from biosynthetic pathways, reaction cluster from precursor to target molecule could be predicted.
+        </span>
+        <div class='img_container'>
+                <img src="/rxncluster/static/rxncluster_png9.png" style='width:80%;margin:0 auto'>
+                </div>
+        <br><br>
+
+        </div>
+        <div data-role="collapsible" data-collapsed-icon="arrow-r" data-content-theme="c" data-theme="c" data-expanded-icon="arrow-d">
+        <h5>7. Frequently asked questions</h5>
+        <span style='font-size: 18px'><strong>
+        Can I use the RxnCluster data in my research?</strong></span>
+        <br>
+       <span style='font-size: 16px'>RxnCluster is offered to the public as a freely available resource. Use and re-distribution of the data, in whole or in part, not requires permission of the authors.</span>
+       <br><br>
+
+<span style='font-size: 18px'><strong>What if I find some error in the database?</strong></span><br>
+<span style='font-size: 16px'>
+Please send an error report to 23113176@whpu.edu.cn and we will verify it as soon as possible. It would be very helpful if you could provide the correct information.
+</span>
+<br><br>
+<span style='font-size: 18px'><strong>Further questions?</strong></span><br>
+<span style="font-size:16px">
+If you have any other questions, please feel free to contact us by email 23113176@whpu.edu.cn</span>
+<br>
+
+        </div>
+    </div>
+</body>
+{% endblock content %}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>RxnCluster</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+    <style type="text/css">
+    body {
+        padding-top: 60px;
+    }
+
+    .required label:after {
+        content: " *";
+    }
+
+    button,
+    input[type='submit'] {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        color: #fff;
+        background-color: #5bc0de;
+        border-color: #46b8da;
+        margin: 2px;
+    }
+
+    button:focus,
+    button:active:focus,
+    button.active:focus,
+    button.focus,
+    button:active.focus,
+    button.active.focus {
+        outline: thin dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px;
+    }
+
+    button:hover,
+    button:focus,
+    button.focus {
+        color: #333;
+        text-decoration: none;
+    }
+
+    input[type='submit']:hover,
+    input[type='submit']:focus,
+    input[type='submit'].focus {
+        color: #333;
+        text-decoration: none;
+    }
+
+    button:active,
+    button.active {
+        background-image: none;
+        outline: 0;
+        color: #fff;
+        background-color: #31b0d5;
+        border-color: #269abc;
+        -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    }
+    </style>
+    {% block css %}
+    {% endblock css %}
+    {% block js %}
+    {% endblock js %}
+</head>
+
+<body>
+    <div class="container" style="width:auto">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+
+                    <span class="navbar-brand" ><a href="http://design.rxnfinder.org/rxncluster/">RxnCluster</a></span>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        
+                        <!--    <li><a href="http://www.rxnfinder.org">RxnFinder</a></li> -->
+<!--                        <li><a href="http://www.rxnfinder.org/rxnfinder/" style="color:#777">RxnFinder</a></li>-->
+                        
+                       <li><a href="/rxncluster/faq/" style="color:#777" target='_blank'>FAQ</a></li>
+                        <!-- <li><a href="/rxncluster/browse/" style="color:#777" target='_blank'>Browse</a></li> -->
+                        <li><a href="/rxncluster/statistics/" style="color:#777" target='_blank'>Statistics</a></li>
+<!--                        <li><a href="http://design.rxnfinder.org/novopathfinder/admin/" style="color:#777" target='_blank'>Download</a></li>-->
+                        <!-- <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="http://hulab.rxnfinder.org/media/jme/index.html">Molecule Input</a></li>
+                                <li><a href="http://hulab.rxnfinder.org/media/jme/rxnindex.html">Reaction Input</a></li>
+                                <li class="divider"></li>
+                                <li><a href="http://hulab.rxnfinder.org/convertformats/">Convert Formats</a></li>
+                                <li><a href="http://hulab.rxnfinder.org/smi2img/">Smiles To Images</a></li>
+                                <li><a href="http://hulab.rxnfinder.org/name2img/">Name To Images</a></li>
+                                <li><a target='_blank' href="http://design.rxnfinder.org/novopathfinder/statistic/">Web Monitor</a></li>
+                            </ul>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="row clearfix">
+            <div class="col-md-12" >
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                {% block content %}{{tips|safe}}{% endblock %}
+            </div>
+            <div id = "footer" class="row" style="margin-top:20px;width:95%;margin:auto">
+                <div class="col-md-12 panel panel-default" style="background: rgb(251, 255, 250);">
+                    <div class="panel-body">
+                        <ul class="list-inline pull-right">
+                            <li><a href="http://design.rxnfinder.org/rxncluster/">RxnCluster &nbsp;2025</a></li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <div style="visibility:hidden;display:none" hidden>
+        <script>
+            var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?1627523662d16280b1d8bcc8e12bd3c9";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    </div>
+    <input type="hidden" id="animate" checked="checked" />
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+{% extends "result_base.html" %}
+{% block title %} Search Result{% endblock%}
+{% block css %}
+<link rel='stylesheet' href='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.css'>
+<style type="text/css">
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    text-align: center;
+}
+
+table td,
+table th {
+    border: 1px solid #cad9ea;
+    color: #666;
+    height: 30px;
+}
+
+table thead th {
+    background-color: #CCE8EB;
+    width: 200px;
+    text-align: center;
+}
+
+table tr:nth-child(odd) {
+    background: #fff;
+}
+
+table tr:nth-child(even) {
+    background: #F5FAFA;
+}
+
+/*.selectOption
+    {
+      display:inline;
+    }*/
+.font_label {
+    font-family: inherit;
+
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    font-size: 18px;
+    width: 300px;
+}
+
+;
+</style>
+{% endblock css %}
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script type='text/javascript' src='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.js'></script>
+<script type="text/javascript">
+statisticsResult = null;
+$.ajax({
+    method: "GET", // 设置请求方式为GET
+    url: "/rxncluster/static/statistics.json", // 加载本地json文件
+    'async': false,
+    dataType: "json", // 设置数据类型为json
+    success: function(e) {
+        statisticsResult = e // 输出结果
+    }
+});
+
+$(document).ready(function() {
+    var chartDom = document.getElementById('main1');
+    var myChart = echarts.init(chartDom);
+    var option1;
+
+    var char = statisticsResult[0]
+    char1 = {};
+    char1.legendData = Object.keys(char);
+    char1.seriesData = []
+    for (var i in char) {
+        var name = i;
+        var value = char[i];
+        char1.seriesData.push({ "name": i, "value": value })
+    }
+    option1 = {
+        title: {
+            text: 'The data distribution of biosynthetic patterns in various numbers of steps',
+            //subtext: '纯属虚构',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 35,
+            top: 70,
+            bottom: 20,
+            data: char1.legendData
+        },
+        series: [{
+            name: '',
+            type: 'pie',
+            radius: '55%',
+            center: ['25%', '50%'],
+            data: char1.seriesData,
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+    option1 && myChart.setOption(option1);
+})
+$(document).ready(function() {
+    var chartDom = document.getElementById('main2');
+    var myChart = echarts.init(chartDom);
+    var option1;
+
+    var char = statisticsResult[1]
+    char1 = {};
+    char1.legendData = Object.keys(char);
+    char1.seriesData = []
+    for (var i in char) {
+        var name = i;
+        var value = char[i];
+        char1.seriesData.push({ "name": i, "value": value })
+    }
+    option1 = {
+        title: {
+            text: 'The data distribution of biosynthetic patterns at different frequency scales',
+            //subtext: '纯属虚构',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 50,
+            top: 70,
+            bottom: 20,
+            data: char1.legendData
+        },
+        series: [{
+            name: 'Frequency',
+            type: 'pie',
+            radius: '55%',
+            center: ['25%', '50%'],
+            data: char1.seriesData,
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+    option1 && myChart.setOption(option1);
+})
+
+$(document).ready(function() {
+    var app = {};
+
+    var chartDom = document.getElementById('main3');
+    var myChart = echarts.init(chartDom);
+    var option;
+    source = statisticsResult[2]
+    console.log(source)
+    option = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: source
+        },
+        xAxis: { type: 'category' },
+        yAxis: {},
+        // Declare several bar series, each will be mapped
+        // to a column of dataset.source by default.
+        series: [{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }, { type: 'bar' }]
+    };
+
+    option && myChart.setOption(option);
+});
+</script>
+{% endblock js %}
+{% block content %}
+
+<body>
+    <br><br><br>
+    <div id="totalChar" style="width:80%;margin:0 auto">
+        <h4>1: The data distribution of biosynthetic patterns(RuleClusters) at various numbers of steps</h4>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;In this research, we digitalize the typical biosynthetic patterns existed in our previous study which containing nearly 50,000,000 biosynthetic pathways for producing 6,026 molecules, and construct RxnCluster which contained 14,378 typical biosynthetic patterns (RuleClusters) covering 37,317 reaction combinations(reaction clusters) whose numbers of steps vary from 1 to 4, and each biosynthetic pattern is related to at least two reaction combinations(reaction clusters).To be specific,there are 1,011 RuleClusters contains 1 step, 2,008 RuleClusters contain 2 steps , 3,820 RuleClusters contains 3 steps and 7,539 RuleClusters contains 4 steps.</span>
+        <br>
+        <br>
+        <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+        <div id="main1" style="width:80%;height:400px;margin:0 auto"></div>
+        <h4>2:The data distribution of biosynthetic patterns(RuleClusters) at different frequency scales</h4>
+        <span style='text-align:justify'>&nbsp;&nbsp;&nbsp;&nbsp; We also make a statistic analysis on the data distribution of biosynthetic patterns at different frequency scales, in which there are 13,603 RuleClusters related to 2-5 reaction clusters, 725 RuleClusters related to 5-20 reaction clusters, 50 RuleClusters related to at least 20 reaction clusters.
+        </span>
+        <br>
+        <br>
+        <div id="main2" style="width: 80%;height:400px;margin:0 auto"></div>
+        <h4>3:The data distribution of biosynthetic patterns for various numbers of steps in each kind of frequency level</h4>
+        <span>
+            &nbsp;&nbsp;&nbsp;&nbsp;We make a statistical analysis about biosynthetic patterns for various numbers of steps in each kind of frequency level. For example, there are 13,603 biosynthetic patterns(RuleClusters) relating to reference reaction clusters whose  the frequency count is between 2 and 5. Within these biosynthetic patterns, there are 764  (log10= 2.88)related to 1 step, 1817 (log10= 3.26)related to 2 steps, 3681 (log10= 3.57)related to 3 steps and 7341  (log10= 3.87) related to 4 steps.
+        </span>
+        <br><br>
+        <div id="main3" style="width: 80%;height:400px;margin:0 auto"></div>
+        <h4></h4>
+        <!-- <div id="main4" style="width: 80%;height:400px;margin:0 auto">
+            <table>
+                <thead>
+                <tr>
+                  <th></th>
+                    <th>1 reaction step</th>
+                    <th>2 reaction steps</th>
+                    <th>3 reaction steps</th>
+                    <th>4 reaction steps</th>
+                </tr>
+                <tr>
+                  <th>4 reaction steps</th>
+                  <td> 182 </td>
+                  <td> 3,335 </td>
+                  <td> 10,436 </td>
+                  <td> -- </td>
+                </tr>
+                <tr>
+                  <th>3 reaction steps</th>
+                  <td> 210 </td>
+                  <td> 3,662 </td>
+                  <td> -- </td>
+                  <td> -- </td>
+                </tr>
+                <tr>
+                  <th>2 reaction steps</th>
+                  <td> 233 </td>
+                  <td> -- </td>
+                  <td> -- </td>
+                  <td> -- </td>
+                </tr>
+                <tr>
+                  <th>1 reaction steps</th>
+                  <td> -- </td>
+                  <td> -- </td>
+                  <td> -- </td>
+                  <td> -- </td>
+                </tr>
+                    </thead>
+            </table>
+        </div> -->
+    </div>
+</body>
+{% endblock content %}

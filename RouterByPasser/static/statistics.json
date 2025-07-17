@@ -1,0 +1,43 @@
+[
+    {
+        "RuleClusters with 1 steps": 1011,
+        "RuleClusters with 2 steps": 2008,
+        "RuleClusters with 3 steps": 3820,
+        "RuleClusters with 4 steps": 7539
+    },
+    {
+        "2<=count<5": 13603,
+        "5<=count<20": 725,
+        "20<=count": 50
+    },
+    [
+        [
+            "Frequency",
+            "One step",
+            "Two steps",
+            "Three steps",
+            "Four steps"
+        ],
+        [
+            "2<=feq.<5",
+            2.88,
+            3.26,
+            3.57,
+            3.87
+        ],
+        [
+            "5<=feq.<20",
+            2.32,
+            2.26,
+            2.13,
+            2.3
+        ],
+        [
+            "20<=feq",
+            1.58,
+            0.95,
+            0.48,
+            0
+        ]
+    ]
+]

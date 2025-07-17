@@ -1,0 +1,133 @@
+{% extends "result_base.html" %}
+{% block title %} Search Result{% endblock%}
+{% block css %}
+<link rel="stylesheet" href="/rxncluster/static/js/rxncluster/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="/rxncluster/static/js/rxncluster/smdb-tab2.css">
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel='stylesheet' href='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.css'>
+{% endblock css %}
+{% block js %}
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type='text/javascript' src='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.js'></script>
+<script type="text/javascript" src="/rxncluster/static/js/rxncluster/typeahead.min.js"></script>
+
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
+<style type="text/css">
+	table
+    {
+      border-collapse: collapse;
+      margin: 0 auto;
+      text-align: center;
+    }
+    table td, table th
+    {
+      border: 1px solid #cad9ea;
+      color: #666;
+      height: 30px;
+    }
+    table thead th
+    {
+      background-color: #CCE8EB;
+      width: 100px;
+      text-align: center;
+    }
+    table tr:nth-child(odd)
+    {
+      background: #fff;
+    }
+    table tr:nth-child(even)
+    {
+      background: #F5FAFA;
+    }
+    /*.selectOption
+    {
+      display:inline;
+    }*/
+    .font_label{
+      font-family: inherit;
+    
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+  font-size:18px;
+  width:300px;
+  };
+</style>
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		
+	});
+$(document).ready(function(){
+    $('.pagination a').click(function(e){
+        e.preventDefault(); // 阻止页码的默认点击行为
+        var page = $(this).attr('href').split('?page=')[1];
+        // 使用AJAX获取新的数据
+        $.ajax({
+            url: '/rxncluster/browse/', // Django视图的URL
+            data: { 'page': page },
+            type: 'GET',
+            success: function(data) {
+            	$('.pagination').hide();
+                $('#content').html(data.html);
+                $("#footer").hide();
+
+                
+            }
+        });
+
+    });
+});
+
+</script>
+{% endblock js %} 
+
+{% block content %}
+
+<body>
+    <div class="container">
+
+            <ul class="pagination">
+            	<br>
+            	<br>
+                {% if objects.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ objects.previous_page_number }}">&lsaquo;Prev</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#">&laquo; First</a></li>
+                    <li class="page-item disabled"><a class="page-link" href="#">&lsaquo;Prev</a></li>
+                {% endif %}
+ 					<!-- objects.paginator. -->
+                {% for page_number in page_range %}
+
+                    {% if page_number == objects.number %}
+                        <li class="page-item active"><a>{{ page_number }}</a></li>
+                    {% else %}
+                    <!-- class="page-link" -->
+                       <!-- <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li> -->
+                       <li><a href="?page={{page_number}}">{{ page_number }}</a></li>
+                    {% endif %}
+                {% endfor %}
+ 
+                {% if objects.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ objects.next_page_number }}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ objects.paginator.num_pages }}">Last</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                    <li class="page-item disabled"><a class="page-link" href="#">Last</a></li>
+                {% endif %}
+                <a>[{{ objects.number }}/{{ objects.paginator.num_pages }}]</a>
+            </ul>
+         <div id="content">
+         	<table style="width:95%">
+         	<thead><tr><th>name</th><th>age</th></tr>
+         {% for object in objects %}
+            <tr><td style="width:300px;word-wrap:break-word;word-break:break-all;">{{object.name}}</td><td style="width:300px;word-wrap:break-word;word-break:break-all;">{{object.age}}</td></tr>
+        {% endfor %}
+    </thead>
+        </table>
+    </div>
+        
+    </div>
+</body>
+{% endblock content %}

@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>JME Molecular Editor</title>
+<script type="text/javascript" language="javascript" src="./jsme/jsme.nocache.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script language="JavaScript">
+function submitSmiles() {
+  var smiles = document.JME.smiles();
+  var jme = document.JME.jmeFile();
+  if (smiles == "") {
+    alert("Nothing to convert!");
+  }
+  else {
+    opener.fromEditor(smiles, jme);
+    window.close();
+  }
+}
+
+function openHelpWindow() {
+  window.open("http://www.molinspiration.com/jme/help/jme2008hints.html","jmehelp","toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=510,height=675,left=400,top=20");
+};
+function useMol() {
+  smiles = document.form_editor.mol_output.value;
+  if (smiles==''){
+  	alter('Nothing to convert!')
+  }
+  else{
+  	var data = null;
+  	$.ajax({
+  		'type':'get',
+  		'dataType':'json',
+  		'data':{'smiles':smiles},
+  		'url':'/rxncluster/smiles_to_mol/',
+  		success:function(ret){
+  			data = ret
+  			mol_string = data['mol']
+  			if(mol_string=='error'){alert('Please input valid SMILES!');
+  			window.close();
+  			return 
+  		}
+  			document.JME.readMolFile(mol_string);
+  		}
+  	});
+	}
+ 
+}
+
+
+</SCRIPT>
+</head>
+
+<body bgcolor="#ffffff">
+	<center>
+		<div code="JME.class" name="JME" archive="JME.jar" width="90%"
+			height="85%">You have to enable Java and JavaScritpt on your
+			machine !</div>
+		<form name="form_editor">
+			<input type="button" value=" Get Smiles "
+				onClick="submitSmiles()"> &nbsp;&nbsp; <input type="button"
+				value="  Close  " onClick="window.close()"> &nbsp;&nbsp; <input
+				type="button" value="  Help  " onClick="openHelpWindow()">&nbsp;&nbsp; 
+				<INPUT TYPE="button" VALUE="Display Input Molecule(SMILES)" onClick="useMol()">
+			<br>
+			<TEXTAREA NAME="mol_output" placeholder='Please input Molecule SMILES to display!'ROWS=1 COLS=50></TEXTAREA>
+			
+			
+		</form>
+	</center>
+</body>
+</html>

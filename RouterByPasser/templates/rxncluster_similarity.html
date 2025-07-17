@@ -1,0 +1,114 @@
+{% extends 'result_base.html' %}
+<title>
+	RxnCluster
+</title>
+{% block css %}
+<link rel="stylesheet" href="/rxncluster/static/js/rxncluster/jquery-ui.css">
+  
+<link rel="stylesheet" type="text/css" href="/rxncluster/static/js/rxncluster/smdb-tab2.css">
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel='stylesheet' href='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.css'>
+<style type='text/css'>
+table
+    {
+      border-collapse: collapse;
+      margin: 0 auto;
+      text-align: center;
+    }
+    table td, table th
+    {
+      border: 1px solid #cad9ea;
+      color: #666;
+      height: 30px;
+    }
+    table thead th
+    {
+      background-color: #CCE8EB;
+      width: 100px;
+      text-align: center;
+    }
+    table tr:nth-child(odd)
+    {
+      background: #fff;
+    }
+    table tr:nth-child(even)
+    {
+      background: #F5FAFA;
+    }
+    /*.selectOption
+    {
+      display:inline;
+    }*/
+    .font_label{
+      font-family: inherit;
+    
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+  font-size:18px;
+  };
+  
+  
+</style>
+
+{% endblock css %}
+{% block js %}
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type='text/javascript' src='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.js'></script>
+<script type="text/javascript" src="/rxncluster/static/js/rxncluster/typeahead.min.js"></script>
+<script type='text/javascript'>
+	function entityToString(entity){
+  var div=document.createElement('div');
+  div.innerHTML=entity;
+  var res=div.innerText||div.textContent;
+  return res;
+}
+$(document).ready(function(){
+		score = entityToString('{{score}}');
+  		score = eval("("+score+")");
+  		compdsmis = entityToString('{{compdsmis}}')
+  		compdsmis = eval("("+compdsmis+")")
+
+      dblinks = entityToString('{{dblinks}}');
+      dblinks = eval("("+dblinks+")");
+
+      exactMass = entityToString('{{exactMass}}');
+      exactMass = eval("("+exactMass+")");
+
+      formula = entityToString('{{formula}}');
+      formula = eval("("+formula+")");
+
+      names = entityToString('{{names}}');
+      names = eval("("+names+")");
+
+  		target_struc = '{{target_struc}}';
+      var rank = 0;
+  		for (var i in compdsmis){
+        rank += 1;
+        var href = '';
+        var dbid = dblinks[i].replace("KEGG:", "").replace("ChEBI:", "").replace("Bigg:", "")
+        if(dblinks[i].indexOf("ChEBI")!=-1){
+          href = 'https://ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:' + dbid;
+        }else if (dblinks[i].indexOf("KEGG") != -1) {
+                    href = 'https://www.kegg.jp/entry/' + dbid;}
+                    else if (dblinks[i].indexOf("BiGG") != -1) {
+                    href = 'http://bigg.ucsd.edu/universal/metabolites/' + dbid;
+                }
+  			$("#similarity_compd").append("<tr><td>"+rank+"</td><td>"+score[i]+"</td><td><img style='width:130px;height:130px' src = 'http://hulab.rxnfinder.org/smi2img/"+compdsmis[i]+"'><br><span>"+names[i]+"</span></td><td>"+exactMass[i]+"</td><td>"+formula[i]+"</td><td><a href='"+href+"'>"+dblinks[i]+"</a></td><td><form id='search_comboretro_"+i+"' action =\"{% url 'RouterByPasser:getSimilaritySolution' %}\" method=\"GET\" role='form' target='_blank'><button>Submit</button><input style='display:none' name = 'similarity_compd' value='"+compdsmis[i]+"'><input style='display:none' name = 'target_struc' value='"+target_struc+"'></form></td></tr>")
+  			// 
+  		}
+	});
+	</script>
+{% endblock js %}
+{% block content %}
+<br>
+<br>
+<br>
+<body>
+	<div style="width:80%;margin: 0 auto;">
+		<table id = 'similarity_compd' class="table">
+    <thead ><tr><th style='width:30px'>Rank</th><th style='width:40px'>Similarity Score</th><th>Structure</th><th style='width:30px'>Exact Mass</th><th>Formula/SMILES</th><th>DB Link</th><th style='width:30px'>Search Rxn Cluster</th></tr></thead>
+    </table>
+	</div>
+</body>
+{% endblock content%}

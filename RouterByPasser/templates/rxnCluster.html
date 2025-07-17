@@ -1,0 +1,355 @@
+{% extends "result_base.html" %}
+{% block title %} Search Result{% endblock%}
+{% block css %}
+<link rel="stylesheet" href="/rxncluster/static/js/rxncluster/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="/rxncluster/static/js/rxncluster/smdb-tab2.css">
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel='stylesheet' href='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.css'>
+<style type="text/css">
+#exampleSmiles,
+#example1,
+#example2,
+span[type=ex] {
+    cursor: pointer;
+    color: blue;
+    border-bottom: solid 1px blue;
+}
+
+.btn_button {
+    display: inline;
+}
+
+;
+
+.radio {
+    display: inline;
+}
+
+;
+
+.tt-query,
+.tt-hint {
+    width: 396px;
+    height: 30px;
+    padding: 8px 12px;
+    font-size: 24px;
+    line-height: 30px;
+    border: 2px solid #ccc;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.tt-query {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+    color: #999
+}
+
+.tt-dropdown-menu {
+    width: 422px;
+    margin-top: 12px;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+}
+
+.tt-suggestion {
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+    color: #fff;
+    background-color: #0097cf;
+
+}
+
+#smilesSearchTips {
+    color: red;
+}
+
+.compound_entry {
+    cursor: pointer;
+}
+
+#smilesResult {
+    max-height: 400px;
+    overflow-x: visible;
+    overflow-y: scroll !important;
+}
+
+#smilesResultTips {
+    font-size: 120%;
+}
+</style>
+{% endblock css %}
+{% block js %}
+<!-- <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script> -->
+<script type='text/javascript' src='http://apps.bdimg.com/libs/jquerymobile/1.4.2/jquery.mobile.min.js'></script>
+<script type="text/javascript" src="/rxncluster/static/js/rxncluster/typeahead.min.js"></script>
+<script>
+    $(function() {
+		//alert("here");
+		$( "#tabs" ).tabs();
+	});
+	$(function() {
+		var h = location.hash || "#tabHome";
+		//alert(h);
+		var index = $('#tabs a[href="' + h + '"]').parent().index();
+		//var index = $('#tabs a[href="#tabs-2"]').parent().index();
+		//alert(index);
+		$("#tabs").tabs("option", "active", index);
+		$(window).scrollTop(0);
+
+		//var index2 = $('# tabs').index(h);
+		//alert("here");
+		//location.hash = h;
+	});
+
+
+
+	$(function() {
+		 $('#tabs ul li a').click(function () {location.hash = $(this).attr('href');});
+		 //$('#tabs ul li').click(function () {location.hash = $(this).attr('href');});
+	 });
+
+	$(window).on( 'hashchange', function(e) {
+		var h = location.hash || "#tabHome";
+		if (h.indexOf("#tab") >= 0) {
+			var index = $('#tabs a[href="' + h + '"]').parent().index();
+			//alert(h+index);
+			$("#tabs").tabs("option", "active", index);
+			$(window).scrollTop(0);
+			//var index2 = $('# tabs').index(h);
+			//alert(index2);
+		};
+	});
+
+$(function() {
+		//alert("here");
+		$( "#tabs_2" ).tabs();
+	});
+	$(function() {
+		var h = location.hash || "#tabHome";
+		//alert(h);
+		var index = $('#tabs_2 a[href="' + h + '"]').parent().index();
+		//var index = $('#tabs a[href="#tabs-2"]').parent().index();
+		//alert(index);
+		$("#tabs_2").tabs("option", "active", index);
+		$(window).scrollTop(0);
+
+		//var index2 = $('# tabs').index(h);
+		//alert("here");
+		//location.hash = h;
+	});
+
+
+
+	$(function() {
+		 $('#tabs_2 ul li a').click(function () {location.hash = $(this).attr('href');});
+		 //$('#tabs ul li').click(function () {location.hash = $(this).attr('href');});
+	 });
+
+	$(window).on( 'hashchange', function(e) {
+		var h = location.hash || "#tabHome";
+		if (h.indexOf("#tab") >= 0) {
+			var index = $('#tabs_2 a[href="' + h + '"]').parent().index();
+			//alert(h+index);
+			$("#tabs_2").tabs("option", "active", index);
+			$(window).scrollTop(0);
+			//var index2 = $('# tabs').index(h);
+			//alert(index2);
+		};
+	});
+
+
+$(function() {
+		//alert("here");
+		$( "#tabs_3" ).tabs();
+	});
+	$(function() {
+		var h = location.hash || "#tabHome";
+		//alert(h);
+		var index = $('#tabs_3 a[href="' + h + '"]').parent().index();
+		//var index = $('#tabs a[href="#tabs-2"]').parent().index();
+		//alert(index);
+		$("#tabs_3").tabs("option", "active", index);
+		$(window).scrollTop(0);
+
+		//var index2 = $('# tabs').index(h);
+		//alert("here");
+		//location.hash = h;
+	});
+
+
+
+	$(function() {
+		 $('#tabs_3 ul li a').click(function () {location.hash = $(this).attr('href');});
+		 //$('#tabs ul li').click(function () {location.hash = $(this).attr('href');});
+	 });
+
+	$(window).on( 'hashchange', function(e) {
+		var h = location.hash || "#tabHome";
+		if (h.indexOf("#tab") >= 0) {
+			var index = $('#tabs_3 a[href="' + h + '"]').parent().index();
+			//alert(h+index);
+			$("#tabs_3").tabs("option", "active", index);
+			$(window).scrollTop(0);
+			//var index2 = $('# tabs').index(h);
+			//alert(index2);
+		};
+	});
+
+
+$(function() {
+		//alert("here");
+		$( "#tabs_4" ).tabs();
+	});
+	$(function() {
+		var h = location.hash || "#tabHome";
+		//alert(h);
+		var index = $('#tabs_4 a[href="' + h + '"]').parent().index();
+		//var index = $('#tabs a[href="#tabs-2"]').parent().index();
+		//alert(index);
+		$("#tabs_4").tabs("option", "active", index);
+		$(window).scrollTop(0);
+
+		//var index2 = $('# tabs').index(h);
+		//alert("here");
+		//location.hash = h;
+	});
+
+
+
+	$(function() {
+		 $('#tabs_4 ul li a').click(function () {location.hash = $(this).attr('href');});
+		 //$('#tabs ul li').click(function () {location.hash = $(this).attr('href');});
+	 });
+
+	$(window).on( 'hashchange', function(e) {
+		var h = location.hash || "#tabHome";
+		if (h.indexOf("#tab") >= 0) {
+			var index = $('#tabs_4 a[href="' + h + '"]').parent().index();
+			//alert(h+index);
+			$("#tabs_4").tabs("option", "active", index);
+			$(window).scrollTop(0);
+			//var index2 = $('# tabs').index(h);
+			//alert(index2);
+		};
+	});
+
+
+function startEditor_precursor(){
+   window.open('/rxncluster/static/jsme/jme_window.html','JME','width=500,height=500 scrollbars=no,resizable=yes');
+  
+};
+function startEditor_target(){
+   window.open('/rxncluster/static/jsme/jme_window_target.html','JME','width=500,height=450 scrollbars=no,resizable=yes');
+  
+};
+var smiles='';
+var jme='0 0';
+function fromEditor(smiles,jme){
+    if(smiles==''){
+        alert('no molecule submitted');
+        return;
+    };
+    $('#precursor_struc').val(smiles);
+};
+
+function fromEditor_target(smiles,jme){
+    if(smiles==''){
+        alert('no molecule submitted');
+        return;
+    };
+    $('#target_struc').val(smiles);
+};
+
+
+$(document).ready(function(){
+	$("#clear_struc").on('click',function(){
+	$('#precursor_struc').val('');
+	$('#target_struc').val('');
+});
+	$("#example_struc").on("click",function(){
+
+	// 	$('#precursor_struc').val('O=C(O)CCC1CCCC1');
+	// $('#target_struc').val('O=C(N)CCC1CCCC1');
+//$("#precursor_struc").val("C=C(C)C1CC=C(C)CCC=C(CCC)CC1");
+
+
+	//$("#target_struc").val("C=C(C(=O)O)C1CC=C(C)CCC=C(CCC)CC1");
+
+	$("#precursor_struc").val("NC(Cc1cccc2ccccc12)C(=O)O")
+	$("#target_struc").val("O=C(O)Cc1cccc2ccccc12")
+	})
+
+})
+
+
+</script>
+{% endblock js %}
+{% block content %}
+<br>
+<br>
+<br>
+<div id="tabs" style="width:70%;margin:0 auto;">
+    <ul style="background-color:#cce8eb">
+    </ul>
+    <div id="tabPathTracker">
+        <div id="tabs_2">
+            <ul>
+                <li><a href="#structure">Structure Search</a></li>
+               
+            </ul>
+            <form id='submit' action="{% url 'RouterByPasser:search' %}" method='GET' role="form" target="_blank">
+                <div id='structure'>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label for="precursor_struc" class="col-sm-2 control-label">Precursor Smiles:</label>
+                            <div class="col-sm-10" style='width:450px'>
+                                <input type="text" name="precursor_struc" id="precursor_struc" ">
+                            </div>
+                            <button type='button' onClick="startEditor_precursor();" style='width:150px;background-color:#cce8eb;font-size: 15px;font-weight: 100;margin:10px'>Draw Molecule</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="target_struc" class="col-sm-2 control-label">Target Smiles:</label>
+                            <div class="col-sm-10" style='width:450px'>
+                                <input type="text" name="target_struc" id="target_struc" class="form-control compound-typehead" required="required">
+                            </div>
+                            <button type='button' onClick="startEditor_target();" style='width:150px;background-color:#cce8eb;font-size: 15px;font-weight: 100;margin:10px'>Draw Molecule</button>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-2">
+                                <button type="submit" class='btn_button' style='width:120px;background-color:#428bca;color:white;font-size: 15px;font-weight: 50'>Submit</button>
+                                <button type="button" class='btn_button' id="clear_struc" style='width:120px;background-color:#d43f3a;color:white;font-size: 13px;font-weight: 50'>Clear</button>
+                                <button type="button" class='btn_button' id="example_struc" style='width:120px;background-color:#5bc0de;color:white;font-size: 15px;font-weight: 50'>Example</button>
+                                <!-- <span type='ex' id='example2'>example</span> -->
+                               <!--  <input type='text' name='page' id="page" value='1' style='display:none'> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+</div>
+<br>
+{% endblock content%}

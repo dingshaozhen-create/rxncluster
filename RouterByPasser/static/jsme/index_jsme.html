@@ -1,0 +1,113 @@
+<!--Already Migrate JME to JSME 2013.10.05-->
+<HTML>
+<HEAD>
+<TITLE>Molecule Input via JSME</TITLE>
+<script type="text/javascript" language="javascript" src="./jsme/jsme.nocache.js"></script>
+<SCRIPT LANGUAGE="JavaScript">
+function getSmiles() {
+  var drawing = document.JME.smiles();
+  document.form.smi.value = drawing;
+}
+
+function getMolFile() {
+  var mol = document.JME.molFile();
+  document.form.mol_output.value = mol;
+}
+
+function processJme() {
+  document.JME.readMolecule(document.form.jme_output.value);
+}
+
+function useMol() {
+  console.log(document.form.mol_output.value);
+  
+  document.JME.readMolFile(document.form.mol_output.value);
+}
+
+</SCRIPT>
+
+</HEAD>
+<body>
+
+<center>
+<p>
+<H2>Molecule Input via JME</H2>
+<hr>
+<P>
+<table border=0 width="100%">
+<tr>
+<td align="center"> 
+<div code="JME.class" name="JME" archive="JME.jar" width=360 height=315>
+</div>
+</td>
+<td align="center">
+<FORM METHOD="POST" NAME="form" ONSUBMIT="return false;">
+<p>
+<CENTER>
+<b>Molecule smiles</b><BR>
+<INPUT TYPE="text" NAME="smi" SIZE=48"><BR>
+<p>
+<b>mol file</b><BR>
+<TEXTAREA NAME="mol_output" ROWS=5 COLS=40></TEXTAREA>
+<P>
+<INPUT TYPE="button" VALUE="Get Molecule Smiles" onClick="getSmiles()">
+&nbsp;
+<INPUT TYPE="button" VALUE="Get Molecule mol file" onClick="getMolFile()">
+&nbsp;
+<p>
+<INPUT TYPE="button" VALUE="Display Input Molecule" onClick="useMol()">
+<P>
+<INPUT TYPE="button" VALUE="Clear Editor" onClick="document.JME.reset()">
+&nbsp;
+<INPUT TYPE="reset" VALUE="Clear Fields">
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+
+
+<TABLE BORDER=1>
+    <CAPTION>
+        <B>Keyboard shortcuts</B>
+    </CAPTION>
+    <TR>
+        <TD><FONT SIZE=2>bonds -,=,#</FONT></TD>
+        <TD><FONT SIZE=2>rings 3..8, Ph is 1, furyl 0</FONT></TD>
+        <TD><FONT SIZE=2>atoms C,N,O,P,S,F,L,B,I,H</FONT></TD>
+        <TD><FONT SIZE=2>groups t - tert.butyl, ft - CF3, y -
+                nitro, a - COOH, z - SO3H</FONT></TD>
+    </TR>
+    <TR>
+        <TD><FONT SIZE=2>d - delete</FONT></TD>
+        <TD COLSPAN=3><FONT SIZE=2>Esc - return to the standard
+                state (C, single bond)</FONT></TD>
+    <TR>
+        <TD COLSPAN=4><FONT SIZE=2>molecule may by moved by
+                "dragging" free space and rotated by pressing concurrently also
+                the shift key</FONT></TD>
+    </TR>
+</TABLE>
+
+<hr>
+<P>
+   </td></tr>
+  </table>
+  </td></tr>
+
+  <tr><td align="center" class="menu">
+    <table width="800">
+      <tr>
+        <th><a href="/ditad/">DiTaD</a></th>
+        <th><a href="/rxnip/">RxnIP</a></th>
+        <th><a href="/home/">Hu Lab</a></th>
+        <th><a href="http://pharmacy.whu.edu.cn/">College of Pharmacy</a><th>
+        <th><a href="http://www.whu.edu.cn/">Wuhan University</a><th>
+      </tr>
+    </table>
+  </td></tr>
+</table>
+
+</body>
+</html>
