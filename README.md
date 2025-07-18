@@ -39,7 +39,7 @@ pip install -r requirements.txt
 
 ### 3. Load the data:
 
-All data utilized in this project is stored in /path/to/rxncluste/DataExcel/. These Excel files need to be imported into the PostgreSQL database. We recommend using Navicat (https://www.navicat.com.cn/) as the database management tool to import the data into PostgreSQL.
+All data utilized in this project is stored in /path/to/rxncluster/DataCSV. These CSV files need to be imported into the PostgreSQL database. We recommend using Navicat (https://www.navicat.com.cn/) as the database management tool to import the data into PostgreSQL.(Notes: The original data "RouterByPasser_pathsearch_combo_steps_smarts.csv" contains 3,380,778 entries (file size 3.6 GB). Since the single maximum file size on GitHub is limited to 100 MB, therefore the repository only provides the test data for the example case, where the precursor compound is NC(Cc1cccc2ccccc12)C(=O)O, and the target compound is O=C(O)Cc1cccc2ccccc1)
 
 ### 4. Set up the PostgreSQL database:
    - Create a database named `rxncluster`.
